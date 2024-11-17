@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import {tracked} from '@glimmer/tracking';
+import {inject as service} from '@ember/service';
+import {action} from '@ember/object';
 
 export default class InviteForUserController extends Controller {
     @service fetch;
@@ -13,15 +13,15 @@ export default class InviteForUserController extends Controller {
     @tracked isLoading;
 
     @action acceptInvite() {
-        const { code } = this;
+        const {code} = this;
 
         this.isLoading = true;
 
         this.fetch
-            .post('users/accept-company-invite', { code })
-            .then((response) => {
+            .post('users/accept-company-invite', {code})
+            .then(response => {
                 this.session.manuallyAuthenticate(response.token);
-                this.notifications.success('Invitation accepted, welcome to Fleetbase!');
+                this.notifications.success('Invitation accepted, welcome to Rapide!');
 
                 this.isLoading = false;
 
@@ -31,7 +31,7 @@ export default class InviteForUserController extends Controller {
                     }
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 this.notifications.serverError(error);
                 this.isLoading = false;
             });
@@ -46,7 +46,7 @@ export default class InviteForUserController extends Controller {
             declineButtonDisabled: true,
             password: null,
             password_confirmation: null,
-            confirm: (modal) => {
+            confirm: modal => {
                 modal.startLoading();
 
                 const input = modal.getOptions(['password', 'password_confirmation']);

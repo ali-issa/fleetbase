@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-import { action, getProperties } from '@ember/object';
+import {inject as service} from '@ember/service';
+import {tracked} from '@glimmer/tracking';
+import {action, getProperties} from '@ember/object';
 import OnboardValidations from '../../validations/onboard';
 import lookupValidator from 'ember-changeset-validations';
 import Changeset from 'ember-changeset';
@@ -127,21 +127,21 @@ export default class OnboardIndexController extends Controller {
 
         return this.fetch
             .post('onboard/create-account', input)
-            .then(({ status, skipVerification, token, session }) => {
+            .then(({status, skipVerification, token, session}) => {
                 if (status === 'success') {
                     if (skipVerification === true && token) {
                         // only manually authenticate if skip verification
                         this.session.isOnboarding().manuallyAuthenticate(token);
 
                         return this.router.transitionTo('console').then(() => {
-                            this.notifications.success('Welcome to Fleetbase!');
+                            this.notifications.success('Welcome to Rapide!');
                         });
                     }
 
-                    return this.router.transitionTo('onboard.verify-email', { queryParams: { hello: session } });
+                    return this.router.transitionTo('onboard.verify-email', {queryParams: {hello: session}});
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 this.notifications.serverError(error);
             })
             .finally(() => {

@@ -1,5 +1,5 @@
 import AuthVerificationController from '../auth/verification';
-import { action } from '@ember/object';
+import {action} from '@ember/object';
 
 export default class OnboardVerifyEmailController extends AuthVerificationController {
     /**
@@ -9,18 +9,18 @@ export default class OnboardVerifyEmailController extends AuthVerificationContro
      * @memberof OnboardVerifyEmailController
      */
     @action verifyCode() {
-        const { hello, code } = this;
+        const {hello, code} = this;
 
         this.isLoading = true;
 
         return this.fetch
-            .post('onboard/verify-email', { session: hello, code })
-            .then(({ status, token }) => {
+            .post('onboard/verify-email', {session: hello, code})
+            .then(({status, token}) => {
                 if (status === 'ok') {
                     this.notifications.success('Email successfully verified!');
 
                     if (token) {
-                        this.notifications.info('Welcome to Fleetbase!');
+                        this.notifications.info('Welcome to Rapide!');
                         this.session.manuallyAuthenticate(token);
 
                         return this.router.transitionTo('console');
@@ -29,7 +29,7 @@ export default class OnboardVerifyEmailController extends AuthVerificationContro
                     return this.router.transitionTo('auth.login');
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 this.notifications.serverError(error);
             })
             .finally(() => {

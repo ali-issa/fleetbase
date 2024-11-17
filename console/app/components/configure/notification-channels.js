@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import {inject as service} from '@ember/service';
+import {tracked} from '@glimmer/tracking';
+import {action} from '@ember/object';
 
 export default class ConfigureNotificationChannelsComponent extends Component {
     @service fetch;
@@ -9,7 +9,7 @@ export default class ConfigureNotificationChannelsComponent extends Component {
     @service currentUser;
     @tracked isLoading = false;
     @tracked testResponse;
-    @tracked testTitle = 'Hello World from Fleetbase 🚀';
+    @tracked testTitle = 'Hello World from Rapide 🚀';
     @tracked testMessage = 'This is a test push notification!';
     @tracked apnToken;
     @tracked fcmToken;
@@ -61,7 +61,7 @@ export default class ConfigureNotificationChannelsComponent extends Component {
                     subject_type: 'company',
                     type: 'apn_key',
                 },
-                (uploadedFile) => {
+                uploadedFile => {
                     const apnConfig = this.apn;
                     apnConfig.private_key_file = uploadedFile;
                     apnConfig.private_key_file_id = uploadedFile.id;
@@ -86,7 +86,7 @@ export default class ConfigureNotificationChannelsComponent extends Component {
                     subject_type: 'company',
                     type: 'firebase_credentials',
                 },
-                (uploadedFile) => {
+                uploadedFile => {
                     const firebaseConfig = this.firebase;
                     firebaseConfig.credentials_file = uploadedFile;
                     firebaseConfig.credentials_file_id = uploadedFile.id;
@@ -113,7 +113,7 @@ export default class ConfigureNotificationChannelsComponent extends Component {
 
         this.fetch
             .get('settings/notification-channels-config')
-            .then((response) => {
+            .then(response => {
                 this.setConfigValues(response);
             })
             .finally(() => {
@@ -155,7 +155,7 @@ export default class ConfigureNotificationChannelsComponent extends Component {
                 apnToken: this.apnToken,
                 fcmToken: this.fcmToken,
             })
-            .then((response) => {
+            .then(response => {
                 this.testResponse = response;
             })
             .finally(() => {

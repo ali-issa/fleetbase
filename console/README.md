@@ -1,16 +1,16 @@
 <div id="hero">
   <p align="center" dir="auto">
       <a href="https://fleetbase.io" rel="nofollow">
-        <img src="https://user-images.githubusercontent.com/58805033/191936702-fed04b0f-7966-4041-96d0-95e27bf98248.png" alt="Fleetbase logo" width="600" height="140" style="max-width: 100%;">
+        <img src="https://user-images.githubusercontent.com/58805033/191936702-fed04b0f-7966-4041-96d0-95e27bf98248.png" alt="Rapide logo" width="600" height="140" style="max-width: 100%;">
       </a>
     </p>
     <h2 align="center" dir="auto">
-      Fleetbase Console
+      Rapide Console
     </h2>
 </div>
 
 <p align="center" dir="auto">
-  <img src="https://user-images.githubusercontent.com/816371/246987420-deef79fa-e30c-4ce9-8a04-0dee990ffd9d.png" alt="Fleetbase Console" width="600" style="max-width: 100%;" />
+  <img src="https://user-images.githubusercontent.com/816371/246987420-deef79fa-e30c-4ce9-8a04-0dee990ffd9d.png" alt="Rapide Console" width="600" style="max-width: 100%;" />
 </p>
 
 # ⭐️ Overview
