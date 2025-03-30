@@ -42,3 +42,6 @@
 [submodule "packages/ledger"]
 	path = packages/ledger
 	url = git@github.com-ali-issa:ali-issa/ledger.git
+[submodule "packages/leaflet-routing-machine"]
+	path = packages/leaflet-routing-machine
+	url = git@github.com-ali-issa:ali-issa/leaflet-routing-machine.git
