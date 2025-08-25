@@ -31,13 +31,23 @@ services:
       SOCKETCLUSTER_WORKERS: 10
       SOCKETCLUSTER_BROKERS: 10
 
+  scheduler:
+    image: fleetbase/fleetbase-api:latest
+    command: ["go-crond", "--verbose", "root:./crontab"]
+    environment:
+      DATABASE_URL: "mysql://root@database/fleetbase"
+      QUEUE_CONNECTION: redis
+      CACHE_DRIVER: redis
+      CACHE_PATH: /fleetbase/api/storage/framework/cache
+      CACHE_URL: tcp://cache
+      REDIS_URL: tcp://cache
+    depends_on:
+      - database
+      - cache
+
   queue:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: events-dev
-      args:
-        ENVIRONMENT: development
+    image: fleetbase/fleetbase-api:latest
+    command: ["php", "artisan", "queue:work"]
     healthcheck:
       test: ["CMD", "php", "artisan", "queue:status"]
       interval: 30s
@@ -50,28 +60,21 @@ services:
       CACHE_PATH: /fleetbase/api/storage/framework/cache
       CACHE_URL: tcp://cache
       REDIS_URL: tcp://cache
+    depends_on:
+        - database
+        - cache
 
   console:
-    build:
-      context: .
-      dockerfile: console/Dockerfile.server-build
-      args:
-        ENVIRONMENT: development
+    image: fleetbase/fleetbase-console:latest
     ports:
       - "4200:4200"
     volumes:
-      - console-build:/console
+      - ./console/fleetbase.config.json:/usr/share/nginx/html/fleetbase.config.json
 
   application:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: app-dev
-      args:
-        ENVIRONMENT: development
-        GITHUB_AUTH_KEY: ${GITHUB_AUTH_KEY}
+    image: fleetbase/fleetbase-api:latest
     volumes:
-      - console-build:/fleetbase/console
+      - ./api/.env:/fleetbase/api/.env
     environment:
       ENVIRONMENT: development
       DATABASE_URL: "mysql://root@database/fleetbase"
@@ -101,6 +104,3 @@ services:
       - "8000:80"
     depends_on:
       - application
-
-volumes:
-  console-build:

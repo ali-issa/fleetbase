@@ -7,11 +7,11 @@
     <p align="center" dir="auto">
       Modular logistics and supply chain operating system
       <br>
-      <a href="https://docs.fleetbase.io/" rel="nofollow">Documentation</a>
+      <a href="https://docs.fleetbase.io/" rel="nofollow" target="_fleetbase_docs">Documentation</a>
       ·
-      <a href="https://console.fleetbase.io" rel="nofollow">Cloud Version</a>
+      <a href="https://console.fleetbase.io" rel="nofollow" target="_fleetbase_console">Cloud Version</a>
       ·
-      <a href="https://fleetbase.apichecker.com" target="_api_status" rel="nofollow">API Status</a>
+      <a href="https://console.fleetbase.io/aws-marketplace" rel="nofollow" target="_aws_marketplace">Deploy on AWS</a>
       ·
       <a href="https://tally.so/r/3NBpAW" rel="nofollow">Book a Demo</a>
       ·
@@ -32,16 +32,14 @@ Fleetbase is a modular logistics and supply chain operating system designed to s
 
 ```bash
 git clone git@github.com:fleetbase/fleetbase.git  
-cd fleetbase  
-docker-compose up -d  
-docker exec -ti fleetbase-application-1 bash  
-sh deploy.sh
+cd fleetbase && ./scripts/docker-install.sh
 ```
 
 ## 📖 Table of contents
 
   - [Features](#-features)
   - [Install](#-install)
+  - [Deploy on AWS](#-deploy-on-aws-in-one-click)
   - [Extensions](#-extensions)
   - [Apps](#-apps)
   - [Roadmap](#-roadmap)
@@ -75,10 +73,7 @@ Make sure you have both the latest versions of docker and docker-compose install
 
 ```bash
 git clone git@github.com:fleetbase/fleetbase.git  
-cd fleetbase  
-docker-compose up -d  
-docker exec -ti fleetbase-application-1 bash  
-sh deploy.sh
+cd fleetbase && ./scripts/docker-install.sh
 ```
 
 ### Accessing Fleetbase
@@ -89,7 +84,17 @@ Fleetbase API: http://localhost:8000
 
 ### Additional Configurations
 
-**CORS:** If you’re installing directly on a server you may need to add your IP address or domain to the `api/config/cors.php` file in the `allowed_hosts` array.  
+**CORS:** If you’re installing directly on a server you will need to configure the environment variables to the application container:
+```
+CONSOLE_HOST=http://{yourhost}:4200
+```
+If you have additional applications or frontends you can use the environment variable `FRONTEND_HOSTS` to add a comma delimited list of additioal frontend hosts.
+
+**Application Key** If you get an issue about a missing application key just run:
+```bash
+docker compose exec application bash -c "php artisan key:generate --show"
+```
+Next copy this value to the `APP_KEY` environment variable in the application container and restart.
   
 **Routing:** Fleetbase ships with a default OSRM server hosted by `[router.project-osrm.org](https://router.project-osrm.org)` but you’re able to use your own or any other OSRM compatible server. You can modify this in the `console/environments` directory by modifying the .env file of the environment you’re deploying and setting the `OSRM_HOST` to the OSRM server for Fleetbase to use.  
   
@@ -100,6 +105,7 @@ version: “3.8”
 services:  
   application:  
     environment:  
+      CONSOLE_HOST: http://localhost:4200
       MAIL_MAILER: (ses, smtp, mailgun, postmark, sendgrid)
       OSRM_HOST: https://router.project-osrm.org
       IPINFO_API_KEY:
@@ -108,10 +114,39 @@ services:
       TWILIO_SID:  
       TWILIO_TOKEN:
       TWILIO_FROM:
-      CONSOLE_HOST: http://localhost:4200
 ```
 
 You can learn more about full installation, and configuration in the [official documentation](https://docs.fleetbase.io/getting-started/install).
+
+## 🚀 Deploy on AWS in One Click
+
+Deploy your complete Fleetbase logistics platform on AWS with enterprise-grade security, scalability, and reliability. No DevOps expertise required!
+
+[![Deploy to AWS](https://img.shields.io/badge/Deploy%20to%20AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://console.fleetbase.io/aws-marketplace)
+
+### ✨ What You Get
+
+- **Complete AWS Infrastructure**: ECS Fargate, RDS MySQL, ElastiCache Redis, S3, CloudFront, and more  
+- **25-Minute Setup**: From zero to production-ready logistics platform  
+- **Enterprise Security**: VPC isolation, encrypted storage, secrets management  
+- **Auto-Scaling**: Handle traffic spikes with ECS Fargate auto-scaling  
+- **High Availability**: Multi-AZ deployment with 99.9% uptime SLA  
+- **Cost Optimized**: Pay-as-you-use with optimized resource allocation  
+
+### 🏗️ Infrastructure Included
+
+Your AWS deployment includes a complete, production-ready infrastructure stack:
+
+- **Compute**: ECS Fargate cluster with auto-scaling services  
+- **Database**: RDS MySQL 8.0 with automated backups and Multi-AZ support  
+- **Cache**: ElastiCache Redis for high-performance caching  
+- **Storage**: S3 object storage with CloudFront CDN for global distribution  
+- **Networking**: VPC with private subnets, NAT gateways, and security groups  
+- **Load Balancing**: Application Load Balancer with SSL certificates  
+- **Monitoring**: CloudWatch logs, container insights, and health monitoring  
+- **Messaging**: SQS message queues for background job processing  
+
+[**🚀 Deploy Now**](https://console.fleetbase.io/aws-marketplace) | [**📖 Learn More**](https://docs.fleetbase.io/category/deploying/aws)
 
 # 🧩 Extensions 
 
@@ -145,9 +180,8 @@ Fleetbase offers a few open sourced apps which are built on Fleetbase which can 
 ## 🛣️ Roadmap
 1.  **Inventory and Warehouse Management** ~ Pallet will be Fleetbase’s first official extension for WMS & Inventory.
 2.  **Accounting and Invoicing** ~ Ledger will be Fleetbase’s first official extension accounting and invoicing.
-3.  **Binary Builds** ~ Run Fleetbase from a single binary.
-4.  **Fleetbase for Desktop** ~ Desktop builds for OSX and Windows.
-5. **Custom Maps and Routing Engines** ~ Feature to enable easy integrations with custom maps and routing engines like Google Maps or Mapbox etc…
+3.  **Fleetbase for Desktop** ~ Desktop builds for OSX and Windows.
+4. **Custom Maps and Routing Engines** ~ Feature to enable easy integrations with custom maps and routing engines like Google Maps or Mapbox etc…
 
 ## 🪲 Bugs and 💡 Feature Requests
 
@@ -183,3 +217,4 @@ Get updates on Fleetbase's development and chat with the project maintainers and
 # License & Copyright
 
 Fleetbase is made available under the terms of the <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">GNU Affero General Public License 3.0 (AGPL 3.0)</a>. For other licenses <a href="mailto:hello@fleetbase.io" target="_blank">contact us</a>.
+
